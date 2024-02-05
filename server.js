@@ -1,8 +1,10 @@
+
 const express = require('express');
 const app = express();
 const port = 3000;
+const config = require('./jsonData.json');
 
-const budget = {
+/* const budget = {
     myBudget: [
     {
         title: 'Eat out',
@@ -18,7 +20,7 @@ const budget = {
     },
     ]
 };
-
+*/
 app.use('/', express.static('public'));
 
 app.get('/hello', (req, res) => {
@@ -27,7 +29,8 @@ app.get('/hello', (req, res) => {
 
 
 app.get('/budget', (req, res) => {
-    res.json(budget);
+    //res.json(budget);
+    res.json(config);  
 });
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
