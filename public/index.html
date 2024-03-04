@@ -117,14 +117,14 @@
                 {
                     data: [],
                     backgroundColor: [
-                        'red',
-                        'blue',
-                        'teal',
-                        'black',
-                        'orange',
-                        'silver',
-                        'grey',
-                        'green'
+                        // 'red',
+                        // 'blue',
+                        // 'teal',
+                        // 'black',
+                        // 'orange',
+                        // 'silver',
+                        // 'grey',
+                        // 'green'
                     ],
                 }
             ],
@@ -138,18 +138,21 @@
             });
         }
 
-        const mainData = [];
+        var mainData = [];
         function getBudget(){
                 axios.get('http://localhost:3000/budget').
                 then(function (res) {
-                for(var i = 0; i < res.data.myBudget.length; i++){
-
-                    dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-                    dataSource.labels[i] = res.data.myBudget[i].title;
+                    console.log("Result : " + res.data[0]);
+                //for(var i = 0; i < res.data.myBudget.length; i++){
+                for(var i = 0; i < res.data.length; i++){
+                    dataSource.datasets[0].data[i] = res.data[i].relatedValue;
+                    dataSource.datasets[0].backgroundColor[i] = res.data[i].color;
+                    dataSource.labels[i] = res.data[i].title;
 
                     mainData.push({
-                        "label": res.data.myBudget[i].title,
-                        "value": res.data.myBudget[i].budget
+                        "label": res.data[i].title,
+                        "value": res.data[i].relatedValue,
+                        "color": res.data[i].color
                     });
                 }
                 createChart();
@@ -192,10 +195,12 @@
 
         var key = function(d){ return d.data.label; };
 
+        // var color = d3.scale.ordinal()
+        //     .domain(["Eat out", "Rent", "Groceries", "Electricity", "Internet", "Water", "Gardening", "Sewage"])
+        //     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
         var color = d3.scale.ordinal()
-            .domain(["Eat out", "Rent", "Groceries", "Electricity", "Internet", "Water", "Gardening", "Sewage"])
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
+             .domain(dataSource.labels)
+             .range(dataSource.datasets[0].backgroundColor);
 
         d3.select(".randomize")
             .on("click", function(){
