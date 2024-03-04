@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const colorValidator = (col) => ("^#[A-Fa-f0-9]{6}$").test(col);
-console.log("color validator : " + colorValidator);
 const myBudgetSchema = new mongoose.Schema({
     
     title: {
